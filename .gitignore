@@ -1,0 +1,3 @@
+# Ignore "compiled" Python files as they can be automatically generated when needed
+**/*.pyc
+fresh_tomatoes.html
