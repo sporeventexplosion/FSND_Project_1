@@ -8,15 +8,14 @@ def get_file_contents(filename):
     file_obj.close()
     return text
 
-page_head = get_file_contents('./template/head.html')
-page_body = get_file_contents('./template/body.html')
+page_main = get_file_contents('./template/main.html')
 movie_tile = get_file_contents('./template/tile.html')
 
 def create_movie_tiles_content(movies):
     # The HTML content for this section of the page
     content = ''
     for movie in movies:
-        content += movie_tile.format(
+        content += render_template(movie_tile,
             movie_title=movie.title,
             movie_description=movie.description,
             poster_image_url=movie.poster_image_url,
@@ -29,7 +28,6 @@ def create_movie_tiles_content(movies):
 def render_template(template, **kwargs):
     for item in kwargs.items():
         template = template.replace('{{' + item[0] + '}}', item[1])
-        print item
 
     return template
 
@@ -38,7 +36,7 @@ def open_movies_page(movies):
     output_file = open('fresh_tomatoes.html', 'w')
 
     # Replace the movie tiles placeholder generated content
-    rendered_content = page_head + page_body.format(
+    rendered_content = render_template(page_main,
         movie_tiles=create_movie_tiles_content(movies))
 
     # Output the file
