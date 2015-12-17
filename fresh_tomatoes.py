@@ -1,6 +1,6 @@
 import webbrowser
 import os
-import re
+import cgi
 
 def get_file_contents(filename):
     file_obj = open(filename)
@@ -25,9 +25,16 @@ def create_movie_tiles_content(movies):
 
 # A very simple function for rendering a template string.
 # Made to use double curly braces to not get 'tripped up' by CSS like .format does
-def render_template(template, **kwargs):
+# Escape is optional so values are not double-escaped
+def render_template(template, escape=True, **kwargs):
     for item in kwargs.items():
-        template = template.replace('{{' + item[0] + '}}', item[1])
+        # sanitize the values passed in
+        if escape:
+            value = cgi.escape(item[1])
+        else:
+            value = item[1]
+
+        template = template.replace('{{' + item[0] + '}}', value)
 
     return template
 
@@ -36,7 +43,8 @@ def open_movies_page(movies):
     output_file = open('fresh_tomatoes.html', 'w')
 
     # Replace the movie tiles placeholder generated content
-    rendered_content = render_template(page_main,
+    # Avoid escaping the already-escaped content from create_movie_tile_content
+    rendered_content = render_template(page_main, escape=False,
         movie_tiles=create_movie_tiles_content(movies))
 
     # Output the file
