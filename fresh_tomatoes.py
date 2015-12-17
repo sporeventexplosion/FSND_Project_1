@@ -24,6 +24,15 @@ def create_movie_tiles_content(movies):
         )
     return content
 
+# A very simple function for rendering a template string.
+# Made to use double curly braces to not get 'tripped up' by CSS like .format does
+def render_template(template, **kwargs):
+    for item in kwargs.items():
+        template = template.replace('{{' + item[0] + '}}', item[1])
+        print item
+
+    return template
+
 def open_movies_page(movies):
     # Create or overwrite the output file
     output_file = open('fresh_tomatoes.html', 'w')
