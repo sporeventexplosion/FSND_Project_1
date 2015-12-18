@@ -4,6 +4,8 @@ import cgi
 
 
 def get_file_contents(filename):
+    """Returns a string containing the contents of the file filename"""
+
     file_obj = open(filename)
     text = file_obj.read()
     file_obj.close()
@@ -14,6 +16,8 @@ movie_tile = get_file_contents('./template/tile.html')
 
 
 def create_movie_tiles_content(movies):
+    """Returns string containing HTML for all tiles on the resulting page"""
+
     # The HTML content for this section of the page
     content = ''
     for movie in movies:
@@ -30,6 +34,10 @@ def create_movie_tiles_content(movies):
 
 
 def render_template(template, escape=True, **kwargs):
+    """
+    Renders a template by replacing {{x}} in the source template
+    with the value of x in kwargs
+    """
 
     for item in kwargs.items():
         # sanitize the values passed in
@@ -44,6 +52,10 @@ def render_template(template, escape=True, **kwargs):
 
 
 def open_movies_page(movies):
+    """
+    Creates a page containing the movies in the list movies, writes it
+    to a file, and opens the file in a browser
+    """
     # Create or overwrite the output file
     output_file = open('fresh_tomatoes.html', 'w')
 
